@@ -1,0 +1,21 @@
+# Fichier: kairn/.gitignore
+
+# Fichier d'environnement
+.env
+
+# Dépendances et caches Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+venv/
+
+# Dépendances et build Frontend
+node_modules/
+.next/
+dist/
+build/
+
+# Fichiers IDE
+.vscode/
+.idea/

@@ -1,0 +1,47 @@
+# Fichier: kairn/docker-compose.yml
+
+
+
+services:
+  # Service de la base de données PostgreSQL
+  db:
+    image: postgres:15-alpine
+    container_name: kairn_db
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Service du cache Redis
+  redis:
+    image: redis:7-alpine
+    container_name: kairn_redis
+    ports:
+      - "6379:6379"
+
+  # Service du backend FastAPI
+  backend:
+    build:
+      context: ./backend
+    container_name: kairn_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
