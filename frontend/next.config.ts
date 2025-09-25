@@ -1,7 +1,9 @@
-import type { NextConfig } from "next";
+// Fichier: kairn/frontend/next.config.ts (Version Corrigée)
+
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+  output: 'standalone',
+}
 
-export default nextConfig;
+export default nextConfig

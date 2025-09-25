@@ -1,6 +1,4 @@
-# Fichier: kairn/docker-compose.yml
-
-
+# Fichier: kairn/docker-compose.yml 
 
 services:
   # Service de la base de données PostgreSQL
@@ -43,5 +41,17 @@ services:
       db:
         condition: service_healthy
 
+  # Service du frontend Next.js (correctement indenté)
+  frontend:
+    build:
+      context: ./frontend
+    container_name: kairn_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
+    
 volumes:
   postgres_data:
