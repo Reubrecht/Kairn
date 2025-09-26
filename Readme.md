@@ -1,6 +1,6 @@
 # Kairn - Plateforme de Profilage pour Athlètes
 
-![Logo Kairn](https://placehold.co/120x120/3b82f6/ffffff?text=K)
+![Logo Kairn](https://github.com/Reubrecht/Kairn/blob/main/kairn_logo.png)
 
 > **Plateforme de profilage pour athlètes d'endurance, spécialisée dans le trail running.**
 
