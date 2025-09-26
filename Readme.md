@@ -1,5 +1,73 @@
-Kairn - Plateforme de Profilage pour Athlètes d'EnduranceKairn est une application web full-stack conçue pour aider les athlètes d'endurance (course à pied, cyclisme, trail) à suivre, analyser et comprendre leurs performances. L'objectif est de fournir une plateforme complète pour le profilage physiologique et le suivi de l'entraînement.✨ Objectifs du ProjetProfilage Complet : Suivi des indicateurs clés de performance (FTP, VMA, FCmax, etc.).Analyse d'Activités : Import et analyse des séances d'entraînement.Visualisation de Données : Graphiques interactifs pour suivre la progression et les tendances.Architecture Professionnelle : Construit sur une stack moderne, évolutive et maintenable.💻 Stack TechniqueL'application est entièrement conteneurisée avec Docker pour garantir un environnement de développement et de production cohérent.DomaineTechnologieFrontendReact (avec Next.js) & Tailwind CSSBackendPython (avec FastAPI)Base de DonnéesPostgreSQLCacheRedisMigrations BDDAlembicEnvironnementDocker & Docker Compose🚀 Démarrage RapideCloner le dépôt (si nécessaire) :git clone [https://github.com/Reubrecht/Kairn.git](https://github.com/Reubrecht/Kairn.git)
-cd Kairn
-Configurer les variables d'environnement :Créez un fichier .env à la racine du projet en copiant le modèle .env.example.cp .env.example .env
-Adaptez les valeurs dans .env si nécessaire (les valeurs par défaut fonctionnent pour le développement local).Lancer l'application avec Docker Compose :Cette commande va construire les images et démarrer tous les services.docker compose up --build -d
-Accéder aux services :Frontend (Application Web) : http://localhost:3000Backend (Documentation API) : http://localhost:8000/docs📂 Structure du ProjetLe projet est organisé en deux services principaux pour une séparation claire des rôles :backend/ : Contient l'API FastAPI, la logique métier et la communication avec la base de données.frontend/ : Contient l'application Next.js, les composants React et l'interface utilisateur.
+# Kairn - Plateforme de Profilage pour Athlètes
+
+![Logo Kairn](https://placehold.co/120x120/3b82f6/ffffff?text=K)
+
+> **Plateforme de profilage pour athlètes d'endurance, spécialisée dans le trail running.**
+
+Kairn est une application web full-stack conçue pour être un jumeau numérique de l'athlète d'endurance. Notre objectif est de traduire la science du sport en un outil intelligent pour l'analyse, la prédiction de performance et la gestion de l'entraînement.
+
+---
+
+## ✨ Vision du Projet
+
+### 🔬 Diagnostic Scientifique
+Analyser les forces et faiblesses en fonction du terrain et de la distance.
+
+### 🤖 Modélisation de la Fatigue
+Prédire l'état de préparation à l'effort via des indicateurs objectifs (VFC) et subjectifs.
+
+### 📈 Prédiction de Performance
+Estimer les temps de course sur des parcours spécifiques en se basant sur le profil unique de l'athlète.
+
+---
+
+## 💻 Stack Technique
+
+L'application est entièrement conteneurisée avec **Docker** pour garantir un environnement de développement et de production cohérent et reproductible.
+
+![Next.js](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+
+---
+
+## 🚀 Démarrage Rapide
+
+### Prérequis
+* **Git**
+* **Docker & Docker Compose**
+* Un environnement de type **Linux** (WSL 2 sur Windows est recommandé)
+
+### Étapes d'installation
+
+1.  **Cloner le dépôt :**
+    ```bash
+    git clone [https://github.com/Reubrecht/Kairn.git](https://github.com/Reubrecht/Kairn.git)
+    cd Kairn
+    ```
+
+2.  **Configurer l'environnement :**
+    Copiez le fichier d'exemple `.env.example` pour créer votre fichier de configuration local. Les valeurs par défaut sont suffisantes pour le développement.
+    ```bash
+    cp .env.example .env
+    ```
+
+3.  **Lancer l'application :**
+    Cette commande unique construit les images Docker et démarre tous les services en arrière-plan.
+    ```bash
+    docker compose up --build -d
+    ```
+
+### Accéder aux services
+
+* **Frontend (Application)** : ➡️ [http://localhost:3000](http://localhost:3000)
+* **Backend (Documentation API)** : ➡️ [http://localhost:8000/docs](http://localhost:8000/docs)
+
+---
+
+Pour en savoir plus sur l'architecture, la vision scientifique et les conventions du projet, consultez le **Wiki du projet**.
