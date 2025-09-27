@@ -1,4 +1,4 @@
-# Fichier: kairn/backend/app/api/v1/endpoints/profiles.py
+# Fichier: kairn/backend/app/api/v1/endpoints/profiles.py (Version Finale)
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -17,7 +17,8 @@ def read_profile_me(
     """
     profile = services.profile_service.get_profile_by_owner_id(db, owner_id=current_user.id)
     if not profile:
-        raise HTTPException(status_code=404, detail="Profile not found")
+        # Si aucun profil n'existe, on le crée
+        profile = services.profile_service.create_profile(db, owner_id=current_user.id)
     return profile
 
 @router.put("/me", response_model=schemas.Profile)
@@ -32,6 +33,6 @@ def update_profile_me(
     """
     profile = services.profile_service.get_profile_by_owner_id(db, owner_id=current_user.id)
     if not profile:
-        raise HTTPException(status_code=404, detail="Profile not found")
+        raise HTTPException(status_code=404, detail="Profile not found for this user")
     profile = services.profile_service.update_profile(db=db, db_obj=profile, obj_in=profile_in)
     return profile

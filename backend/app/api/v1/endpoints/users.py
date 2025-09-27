@@ -7,7 +7,7 @@ from datetime import timedelta
 from app import services
 from app.core import security
 from app.api.v1.deps import get_db
-from app.schemas.user import User, UserCreate, Token # <-- IMPORTS SPÉCIFIQUES
+from app.schemas.user import User, UserCreate, Token
 
 router = APIRouter()
 

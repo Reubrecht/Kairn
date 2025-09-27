@@ -1,4 +1,4 @@
-# Fichier: kairn/docker-compose.yml 
+# Fichier: kairn/docker-compose.yml (Version Finale)
 
 services:
   # Service de la base de données PostgreSQL
@@ -40,8 +40,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    # Le point d'entrée est notre script, qui lance ensuite uvicorn
+    command: /app/prestart.sh uvicorn app.main:app --host 0.0.0.0 --port 8000
 
-  # Service du frontend Next.js (correctement indenté)
+  # Service du frontend Next.js
   frontend:
     build:
       context: ./frontend
@@ -51,6 +53,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    # LA COMMANDE CORRECTE POUR LE FRONTEND
     command: npm run dev
     
 volumes:

@@ -1,3 +1,3 @@
-# Fichier: kairn/backend/app/models/__init__.py
+# Déclare les modèles User et Profile
 from .user import User
 from .profile import Profile
