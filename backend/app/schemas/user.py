@@ -27,4 +27,11 @@ class User(UserBase):
     is_active: bool
 
     class Config:
-        orm_mode = True # Permet de mapper directement depuis le modèle SQLAlchemy
+        from_attributes = True # Permet de mapper directement depuis le modèle SQLAlchemy
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    id: Optional[int] = None
