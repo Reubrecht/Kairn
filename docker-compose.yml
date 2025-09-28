@@ -53,6 +53,8 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    env_file:
+      - .env
     # LA COMMANDE CORRECTE POUR LE FRONTEND
     command: npm run dev
     

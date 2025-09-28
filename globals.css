@@ -1,0 +1,215 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  /* Kairn Brand Colors */
+  --kairn-blue: #0B1E3F;
+  --performance-orange: #FF6B35;
+  --light-gray: #F9FAFB;
+  --mid-gray: #9CA3AF;
+  --dark-gray: #374151;
+  --text-black: #111827;
+  --success-green: #22C55E;
+  --error-red: #EF4444;
+  --warning-yellow: #F59E0B;
+  --chart-aqua: #3CBBA9;
+  --chart-violet: #7C3AED;
+  --chart-blue: #3B82F6;
+  --chart-pink: #EC4899;
+  
+  /* System Colors */
+  --background: #ffffff;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+  --primary: #FF6B35;
+  --primary-foreground: #ffffff;
+  --secondary: #0B1E3F;
+  --secondary-foreground: #0B1E3F;
+  --muted: #F9FAFB;
+  --muted-foreground: #9CA3AF;
+  --accent: #F9FAFB;
+  --accent-foreground: #111827;
+  --destructive: #EF4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(156, 163, 175, 0.2);
+  --input: transparent;
+  --input-background: #F9FAFB;
+  --switch-background: #9CA3AF;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #FF6B35;
+  --chart-1: #3CBBA9;
+  --chart-2: #7C3AED;
+  --chart-3: #3B82F6;
+  --chart-4: #EC4899;
+  --chart-5: #FF6B35;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #FF6B35;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #F9FAFB;
+  --sidebar-accent-foreground: #0B1E3F;
+  --sidebar-border: rgba(156, 163, 175, 0.1);
+  --sidebar-ring: #FF6B35;
+}
+
+.dark {
+  --background: #0B1E3F;
+  --foreground: #ffffff;
+  --card: #0B1E3F;
+  --card-foreground: #ffffff;
+  --popover: #0B1E3F;
+  --popover-foreground: #ffffff;
+  --primary: #FF6B35;
+  --primary-foreground: #ffffff;
+  --secondary: #374151;
+  --secondary-foreground: #ffffff;
+  --muted: #374151;
+  --muted-foreground: #9CA3AF;
+  --accent: #374151;
+  --accent-foreground: #ffffff;
+  --destructive: #EF4444;
+  --destructive-foreground: #ffffff;
+  --border: rgba(156, 163, 175, 0.2);
+  --input: #374151;
+  --ring: #FF6B35;
+  --chart-1: #3CBBA9;
+  --chart-2: #7C3AED;
+  --chart-3: #3B82F6;
+  --chart-4: #EC4899;
+  --chart-5: #FF6B35;
+  --sidebar: #0B1E3F;
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #FF6B35;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #374151;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(156, 163, 175, 0.1);
+  --sidebar-ring: #FF6B35;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/**
+ * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
+ */
+@layer base {
+  :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
+    h1 {
+      font-family: 'Geist Sans', system-ui, sans-serif;
+      font-size: var(--text-2xl);
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    h2 {
+      font-family: 'Geist Sans', system-ui, sans-serif;
+      font-size: var(--text-xl);
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    h3 {
+      font-family: 'Geist Sans', system-ui, sans-serif;
+      font-size: var(--text-lg);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    h4 {
+      font-family: 'Geist Sans', system-ui, sans-serif;
+      font-size: var(--text-base);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    p {
+      font-family: 'Geist Sans', system-ui, sans-serif;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.6;
+    }
+
+    label {
+      font-family: 'Geist Sans', system-ui, sans-serif;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    button {
+      font-family: 'Geist Sans', system-ui, sans-serif;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-medium);
+      line-height: 1.5;
+    }
+
+    input {
+      font-family: 'Geist Sans', system-ui, sans-serif;
+      font-size: var(--text-base);
+      font-weight: var(--font-weight-normal);
+      line-height: 1.5;
+    }
+
+    .font-mono {
+      font-family: 'Geist Mono', 'Consolas', 'Monaco', monospace;
+    }
+  }
+}
+
+html {
+  font-size: var(--font-size);
+}
