@@ -8,12 +8,16 @@ def get_profile_by_owner_id(db: Session, owner_id: int) -> models.Profile:
     """Récupère le profil d'un utilisateur par son ID."""
     return db.query(models.Profile).filter(models.Profile.owner_id == owner_id).first()
 
-def create_profile(db: Session, owner_id: int) -> models.Profile:
-    """Crée un profil vide pour un nouvel utilisateur."""
+def create_profile(db: Session, owner_id: int, commit: bool = True) -> models.Profile:
+    """
+    Crée un profil vide pour un nouvel utilisateur.
+    Le commit est optionnel pour permettre l'intégration dans des transactions plus larges.
+    """
     db_profile = models.Profile(owner_id=owner_id)
     db.add(db_profile)
-    db.commit()
-    db.refresh(db_profile)
+    if commit:
+        db.commit()
+        db.refresh(db_profile)
     return db_profile
 
 def update_profile(
