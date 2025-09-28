@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import './globals.css';
 import { Navbar } from '@/components/layout/Navbar';
+import { AuthProvider } from '@/context/AuthContext'; // Importer le Provider
 
 export const metadata: Metadata = {
   title: "Kairn - Profilage d'Athlètes",
@@ -16,9 +17,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className={GeistSans.className}>
-      <body className="bg-gray-50">
-        <Navbar />
-        <main>{children}</main>
+      <body>
+        {/* Envelopper toute l'application avec le AuthProvider */}
+        <AuthProvider>
+          <Navbar />
+          <main>{children}</main>
+        </AuthProvider>
       </body>
     </html>
   );

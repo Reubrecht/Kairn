@@ -1,7 +1,7 @@
 # Fichier: kairn/backend/Dockerfile (Version Finale)
 
 # --- Étape 1: Le "Builder" ---
-FROM python:3.11-slim as builder
+FROM python:3.11-slim AS builder
 RUN pip install poetry==2.2.1
 RUN poetry self add poetry-plugin-export
 WORKDIR /app
