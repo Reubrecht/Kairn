@@ -1,8 +1,8 @@
 // Fichier: kairn/frontend/src/lib/api.ts
 
 // L'URL de base de notre API backend. 
-// En production, cette valeur devrait provenir d'une variable d'environnement.
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+// Utilise la variable d'environnement si elle est définie, sinon une valeur par défaut pour le développement.
+const API_BASE_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'}/api/v1`;
 
 /**
  * Gère les requêtes fetch vers notre API, en normalisant les réponses et les erreurs.

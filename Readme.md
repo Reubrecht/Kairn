@@ -52,7 +52,7 @@ L'application est entièrement conteneurisée avec **Docker** pour garantir un e
     ```
 
 2.  **Configurer l'environnement :**
-    Copiez le fichier d'exemple `.env.example` pour créer votre fichier de configuration local. Les valeurs par défaut sont suffisantes pour le développement.
+    Créez une copie du fichier d'exemple `.env.example` et nommez-la `.env`. Ce fichier contient les variables d'environnement nécessaires pour connecter les services entre eux. Les valeurs par défaut sont pré-configurées pour un environnement de développement local.
     ```bash
     cp .env.example .env
     ```
