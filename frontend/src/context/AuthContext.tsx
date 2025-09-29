@@ -10,6 +10,7 @@ interface AuthContextType {
   token: string | null;
   login: (email: any, password: any) => Promise<void>;
   logout: () => void;
+  register: (email: any, password: any) => Promise<any>;
   isLoading: boolean;
 }
 
@@ -41,11 +42,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(null);
   };
 
+  const register = async (email: string, password: string) => {
+    const data = await apiRegister(email, password);
+    // L'inscription ne connecte pas automatiquement l'utilisateur,
+    // donc nous ne définissons pas de token ici.
+    // Nous retournons les données pour que l'appelant puisse gérer la suite (ex: redirection).
+    return data;
+  };
+
   const value = {
     isAuthenticated: !!token,
     token,
     login,
     logout,
+    register,
     isLoading,
   };
 
