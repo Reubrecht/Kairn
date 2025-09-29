@@ -2,8 +2,8 @@
 
 'use client';
 
-import { SetStateAction, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { SetStateAction, useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/context/AuthContext';
@@ -17,6 +17,13 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('registered') === 'true') {
+      setSuccess('Inscription réussie ! Vous pouvez maintenant vous connecter.');
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,19 +43,20 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center items-center p-4">
-      <div className="max-w-md w-full mx-auto">
-        <h2 className="text-center text-3xl font-extrabold text-gray-900">
+    <>
+      <div className="text-center">
+        <h2 className="text-3xl font-extrabold text-gray-900">
           Se connecter à Kairn
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        <p className="mt-2 text-sm text-gray-600">
           Pas encore de compte ?{' '}
           <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
             Inscrivez-vous
           </Link>
         </p>
       </div>
-      <div className="max-w-md w-full mx-auto mt-8 bg-white p-8 border border-gray-200 rounded-lg shadow-md">
+
+      <div className="mt-8 bg-white p-8 border border-gray-200 rounded-lg shadow-md">
         <form className="space-y-6" onSubmit={handleSubmit}>
           {error && <p className="text-sm text-red-600 text-center p-3 bg-red-50 rounded-md">{error}</p>}
           {success && <p className="text-sm text-green-600 text-center p-3 bg-green-50 rounded-md">{success}</p>}
@@ -101,6 +109,6 @@ export default function LoginPage() {
           </div>
         </form>
       </div>
-    </div>
+    </>
   );
 }
