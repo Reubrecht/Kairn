@@ -25,7 +25,8 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"], # Autorise toutes les méthodes (GET, POST, etc.)
-    allow_headers=["*"], # Autorise tous les en-têtes
+    allow_headers=["*"],
+ ) # Autorise tous les en-têtes
 @app.get("/")
 def read_root():
     return {"Project": "Kairn"}
