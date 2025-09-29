@@ -1,13 +1,13 @@
-// Fichier: kairn/frontend/src/app/(auth)/login/page.tsx
-
 'use client';
 
-import { SetStateAction, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -34,81 +34,66 @@ export default function LoginPage() {
     try {
       await login(email, password);
       setSuccess('Connexion réussie ! Redirection...');
-      // Redirige vers le tableau de bord avec un indicateur de succès
       router.push('/dashboard?loggedin=true');
     } catch (err: any) {
       setError(err.message || 'Une erreur est survenue lors de la connexion.');
+    } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <>
-      <div className="text-center">
-        <h2 className="text-3xl font-extrabold text-gray-900">
-          Se connecter à Kairn
-        </h2>
-        <p className="mt-2 text-sm text-gray-600">
+    <Card>
+      <CardHeader className="text-center">
+        <CardTitle className="text-2xl">Se connecter</CardTitle>
+        <CardDescription>Accédez à votre tableau de bord Kairn.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {error && <p className="text-sm text-red-600 text-center p-3 bg-red-100 dark:bg-red-900/20 rounded-md">{error}</p>}
+          {success && <p className="text-sm text-green-600 text-center p-3 bg-green-100 dark:bg-green-900/20 rounded-md">{success}</p>}
+          
+          <div className="space-y-2">
+            <Label htmlFor="email">Adresse email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="nom@example.com"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
+              autoComplete="email"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password">Mot de passe</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
+              autoComplete="current-password"
+            />
+          </div>
+
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? 'Connexion en cours...' : 'Se connecter'}
+          </Button>
+        </form>
+      </CardContent>
+      <CardFooter className="text-center text-sm">
+        <p>
           Pas encore de compte ?{' '}
-          <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500">
+          <Link href="/register" className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
             Inscrivez-vous
           </Link>
         </p>
-      </div>
-
-      <div className="mt-8 bg-white p-8 border border-gray-200 rounded-lg shadow-md">
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          {error && <p className="text-sm text-red-600 text-center p-3 bg-red-50 rounded-md">{error}</p>}
-          {success && <p className="text-sm text-green-600 text-center p-3 bg-green-50 rounded-md">{success}</p>}
-          
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Adresse email
-            </label>
-            <div className="mt-1">
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                placeholder="nom@example.com"
-                value={email}
-                onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)}
-                disabled={isLoading}
-              />
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="text-sm font-medium text-gray-700"
-            >
-              Mot de passe
-            </label>
-            <div className="mt-1">
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                placeholder="••••••••"
-                value={password}
-                onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)}
-                disabled={isLoading}
-              />
-            </div>
-          </div>
-
-          <div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Connexion en cours...' : 'Connexion'}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </>
+      </CardFooter>
+    </Card>
   );
 }
