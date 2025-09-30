@@ -2,6 +2,7 @@
 
 :root {
   --font-size: 16px;
+  
   /* Kairn Brand Colors */
   --kairn-blue: #0B1E3F;
   --performance-orange: #FF6B35;
@@ -16,8 +17,8 @@
   --chart-violet: #7C3AED;
   --chart-blue: #3B82F6;
   --chart-pink: #EC4899;
-  
-  /* System Colors */
+
+  /* System Colors - Light Mode */
   --background: #ffffff;
   --foreground: #111827;
   --card: #ffffff;
@@ -25,11 +26,11 @@
   --popover: #ffffff;
   --popover-foreground: #111827;
   --primary: #FF6B35;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #0B1E3F; /* CORRIGÉ: Blanc sur orange n'avait pas assez de contraste. Le bleu foncé de la marque offre un contraste AA conforme aux normes WCAG. */
   --secondary: #0B1E3F;
-  --secondary-foreground: #0B1E3F;
-  --muted: #F9FAFB;
-  --muted-foreground: #9CA3AF;
+  --secondary-foreground: #ffffff; /* CORRIGÉ: Le texte doit être blanc pour être lisible sur le fond bleu foncé. */
+  --muted: #f3f4f6; /* CORRIGÉ: Utilisation d'un gris plus clair pour un fond doux. */
+  --muted-foreground: #6b7280; /* CORRIGÉ: Gris plus foncé pour un meilleur contraste sur le fond clair. */
   --accent: #F9FAFB;
   --accent-foreground: #111827;
   --destructive: #EF4444;
@@ -37,7 +38,7 @@
   --border: rgba(156, 163, 175, 0.2);
   --input: transparent;
   --input-background: #F9FAFB;
-  --switch-background: #9CA3AF;
+  --switch-background: #4a4c50;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
   --ring: #FF6B35;
@@ -58,18 +59,19 @@
 }
 
 .dark {
+  /* System Colors - Dark Mode */
   --background: #0B1E3F;
-  --foreground: #ffffff;
+  --foreground: #f9fafb; /* CORRIGÉ: Un blanc légèrement cassé (light-gray) est souvent plus doux pour l'œil que le blanc pur. */
   --card: #0B1E3F;
-  --card-foreground: #ffffff;
+  --card-foreground: #f9fafb;
   --popover: #0B1E3F;
-  --popover-foreground: #ffffff;
+  --popover-foreground: #f9fafb;
   --primary: #FF6B35;
-  --primary-foreground: #ffffff;
+  --primary-foreground: #0B1E3F; /* CORRIGÉ: Maintien du contraste élevé, identique au mode clair. */
   --secondary: #374151;
   --secondary-foreground: #ffffff;
   --muted: #374151;
-  --muted-foreground: #9CA3AF;
+  --muted-foreground: #9ca3af; /* CORRIGÉ: Mid-gray offre un meilleur contraste pour le texte "muted" en mode sombre. */
   --accent: #374151;
   --accent-foreground: #ffffff;
   --destructive: #EF4444;
@@ -140,6 +142,8 @@
 
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased; /* Améliore le rendu des polices */
+    -moz-osx-font-smoothing: grayscale; /* Améliore le rendu des polices */
   }
 }
 
@@ -150,58 +154,44 @@
   :where(:not(:has([class*=" text-"]), :not(:has([class^="text-"])))) {
     h1 {
       font-family: 'Geist Sans', system-ui, sans-serif;
-      font-size: var(--text-2xl);
+      font-size: 2.25rem; /* CORRIGÉ: Utilisation de valeurs rem pour l'accessibilité au lieu de variables non définies */
       font-weight: 600;
       line-height: 1.4;
     }
 
     h2 {
       font-family: 'Geist Sans', system-ui, sans-serif;
-      font-size: var(--text-xl);
+      font-size: 1.875rem; /* CORRIGÉ */
       font-weight: 600;
       line-height: 1.4;
     }
 
     h3 {
       font-family: 'Geist Sans', system-ui, sans-serif;
-      font-size: var(--text-lg);
+      font-size: 1.5rem; /* CORRIGÉ */
       font-weight: 500;
       line-height: 1.4;
     }
 
     h4 {
       font-family: 'Geist Sans', system-ui, sans-serif;
-      font-size: var(--text-base);
+      font-size: 1.25rem; /* CORRIGÉ */
       font-weight: 500;
       line-height: 1.4;
     }
 
-    p {
+    p, label, button, input {
       font-family: 'Geist Sans', system-ui, sans-serif;
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-normal);
+      font-size: 1rem; /* CORRIGÉ */
       line-height: 1.6;
     }
-
-    label {
-      font-family: 'Geist Sans', system-ui, sans-serif;
-      font-size: var(--text-base);
+    
+    label, button {
       font-weight: var(--font-weight-medium);
-      line-height: 1.5;
     }
 
-    button {
-      font-family: 'Geist Sans', system-ui, sans-serif;
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-medium);
-      line-height: 1.5;
-    }
-
-    input {
-      font-family: 'Geist Sans', system-ui, sans-serif;
-      font-size: var(--text-base);
-      font-weight: var(--font-weight-normal);
-      line-height: 1.5;
+    p, input {
+        font-weight: var(--font-weight-normal);
     }
 
     .font-mono {

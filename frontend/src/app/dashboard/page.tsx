@@ -2,34 +2,80 @@
 'use client';
 
 import { useAuth } from '@/context/AuthContext';
+import { getProfile } from '@/lib/api';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+// Interface pour typer les données du profil
+interface ProfileData {
+    weight?: number;
+    height?: number;
+    gender?: string;
+    birthdate?: string;
+    // Ajoutez d'autres champs de votre modèle de profil ici
+}
 
 export default function DashboardPage() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading: isAuthLoading, token } = useAuth();
   const router = useRouter();
+  const [profile, setProfile] = useState<ProfileData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Si le chargement est terminé et que l'utilisateur n'est pas authentifié,
-    // on le redirige vers la page de connexion.
-    if (!isLoading && !isAuthenticated) {
+    // Si l'authentification est terminée et que l'utilisateur n'est pas connecté, rediriger
+    if (!isAuthLoading && !isAuthenticated) {
       router.push('/login');
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isAuthLoading, router]);
 
-  // Affiche un état de chargement pendant la vérification de l'authentification
-  if (isLoading) {
+  useEffect(() => {
+    // Si l'utilisateur est authentifié et que nous avons un token, récupérer le profil
+    if (isAuthenticated && token) {
+      const fetchProfile = async () => {
+        try {
+          setIsLoading(true);
+          const profileData = await getProfile(token);
+          setProfile(profileData);
+        } catch (err: any) {
+          setError(err.message || 'Impossible de charger le profil.');
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchProfile();
+    }
+  }, [isAuthenticated, token]);
+
+  // Affiche un état de chargement global
+  if (isAuthLoading || isLoading) {
     return <div className="text-center p-10">Chargement...</div>;
   }
+  
+  // Si l'utilisateur n'est pas authentifié, ne rien afficher (la redirection va s'opérer)
+  if (!isAuthenticated) {
+    return null;
+  }
 
-  // Si l'utilisateur est authentifié, on affiche le contenu du tableau de bord
   return (
-    isAuthenticated && (
-      <div className="container mx-auto p-8">
-        <h1 className="text-4xl font-bold">Bienvenue sur votre Tableau de Bord</h1>
-        <p className="mt-4">C'est ici que la magie opère.</p>
-        {/* C'est ici que nous ajouterons les composants de visualisation de données */}
-      </div>
-    )
+    <div className="container mx-auto p-8">
+      <h1 className="text-4xl font-bold">Bienvenue sur votre Tableau de Bord</h1>
+      {error && <p className="mt-4 text-red-500">{error}</p>}
+      
+      {profile ? (
+        <div className="mt-6 bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-semibold">Votre Profil</h2>
+            <ul className="mt-4 space-y-2">
+                <li><strong>Poids:</strong> {profile.weight || 'Non renseigné'} kg</li>
+                <li><strong>Taille:</strong> {profile.height || 'Non renseigné'} cm</li>
+                <li><strong>Sexe:</strong> {profile.gender || 'Non renseigné'}</li>
+                <li><strong>Date de naissance:</strong> {profile.birthdate || 'Non renseignée'}</li>
+            </ul>
+        </div>
+      ) : (
+        <p className="mt-4">Aucune donnée de profil trouvée.</p>
+      )}
+    </div>
   );
 }
+
