@@ -1,41 +1,35 @@
 # Fichier: kairn/backend/app/main.py
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import text # IMPORT MANQUANT AJOUTÉ
 from fastapi.middleware.cors import CORSMiddleware
 
-from .api.v1.api import api_router
-from .api.v1.deps import get_db
+from app.api.v1.api import api_router
+from app.core.config import settings
+from app.db.session import SessionLocal
 
-app = FastAPI(title="Kairn API")
+# Initialisation de l'application FastAPI
+app = FastAPI(title=settings.PROJECT_NAME)
 
-# --- CONFIGURATION CORS ---
-# Liste des origines autorisées à faire des requêtes vers notre API.
-origins = [
-    "http://localhost:3000",
-]
-
+# Configuration des CORS (Cross-Origin Resource Sharing)
+# Permet à votre frontend (tournant sur localhost:3000) de faire des requêtes à votre backend.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
     allow_credentials=True,
-    allow_methods=["*"], # Autorise toutes les méthodes (GET, POST, etc.)
-    allow_headers=["*"], # Autorise tous les headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-# --- FIN DE LA CONFIGURATION CORS ---
 
-app.include_router(api_router, prefix="/api/v1")
-
-@app.get("/")
-def read_root():
-    return {"Project": "Kairn"}
-
+# Endpoint de "vérification de santé" pour s'assurer que l'API et la BDD fonctionnent.
 @app.get("/health")
-def health_check(db: Session = Depends(get_db)):
+def health_check(db: Session = Depends(SessionLocal)):
     try:
-        # Utilise une syntaxe SQLAlchemy 2.0+ pour l'exécution
-        db.execute(text("SELECT 1"))
-        return {"status": "ok", "db_connection": "ok"}
-    except Exception as e:
-        raise HTTPException(status_code=503, detail=f"Database connection error: {e}")
+        # Fait une requête simple pour vérifier la connexion à la base de données.
+        db.execute("SELECT 1")
+        return {"status": "ok", "database": "connected"}
+    except Exception:
+        raise HTTPException(status_code=503, detail="Database connection error")
+
+# Inclusion de toutes les routes de l'API définies dans api/v1/api.py
+app.include_router(api_router, prefix=settings.API_V1_STR)

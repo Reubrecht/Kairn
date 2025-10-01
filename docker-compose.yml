@@ -1,25 +1,31 @@
-# Fichier: kairn/docker-compose.yml (Version Finale)
+# Fichier: kairn/docker-compose.yml (Version Corrigée et Complète)
 
+# Spécifie la version de la syntaxe Docker Compose.
 services:
   # Service de la base de données PostgreSQL
   db:
     image: postgres:15-alpine
     container_name: kairn_db
     environment:
+      # Ces variables sont lues depuis le fichier .env à la racine du projet.
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
     volumes:
+      # Ce volume "nommé" garantit que les données de la BDD persistent même si le conteneur est supprimé.
       - postgres_data:/var/lib/postgresql/data
     ports:
+      # Mappe le port 5432 du conteneur au port 5432 de la machine hôte (WSL).
       - "5432:5432"
     healthcheck:
+      # Docker va vérifier si la base de données est prête à accepter des connexions avant de démarrer
+      # les services qui en dépendent (comme le backend).
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
 
-  # Service du cache Redis
+  # Service du cache Redis (nous le configurerons plus tard, mais il est prêt)
   redis:
     image: redis:7-alpine
     container_name: kairn_redis
@@ -31,16 +37,20 @@ services:
     build:
       context: ./backend
     container_name: kairn_backend
+    env_file:
+      # Charge toutes les variables du fichier .env pour le backend (clé API, URL de la BDD, etc.).
+      - .env
     ports:
+      # Mappe le port 8000 du conteneur au port 8000 de la machine hôte.
+      # C'est ce qui permet à `localhost:8000` de fonctionner depuis votre navigateur.
       - "8000:8000"
     volumes:
+      # Monte le code source local dans le conteneur. Toute modification dans VS Code est
+      # immédiatement répercutée dans le conteneur, permettant le rechargement à chaud.
       - ./backend:/app
-    env_file:
-      - .env
     depends_on:
       db:
-        condition: service_healthy
-    # Le point d'entrée est notre script, qui lance ensuite uvicorn
+        condition: service_healthy # Ne démarre le backend que si la BDD est "healthy".
     command: /app/prestart.sh uvicorn app.main:app --host 0.0.0.0 --port 8000
 
   # Service du frontend Next.js
@@ -48,15 +58,24 @@ services:
     build:
       context: ./frontend
     container_name: kairn_frontend
+    environment:
+      # LA CORRECTION CLÉ :
+      # On injecte l'URL *publique* de l'API. Le code JS dans le navigateur utilisera
+      # cette adresse pour contacter le backend via `localhost`.
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
     ports:
+      # Mappe le port 3000 du conteneur au port 3000 de la machine hôte.
       - "3000:3000"
     volumes:
       - ./frontend:/app
+      # Ce volume "anonyme" empêche le `node_modules` local de remplacer celui
+      # qui a été installé proprement dans l'image Docker. C'est une optimisation importante.
       - /app/node_modules
-    env_file:
-      - .env
-    # LA COMMANDE CORRECTE POUR LE FRONTEND
     command: npm run dev
-    
+    depends_on:
+      # Garantit que le backend est démarré avant le frontend.
+      - backend
+
+# Déclaration du volume nommé utilisé par le service `db`.
 volumes:
   postgres_data:
