@@ -35,8 +35,12 @@ export default function RegisterPage() {
       setTimeout(() => {
         router.push('/login?registered=true');
       }, 2000);
-    } catch (err: any)      {
-      const errorMessage = err.message || "Une erreur est survenue lors de l'inscription.";
+    } catch (err) {
+      let errorMessage = "Une erreur est survenue lors de l'inscription.";
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      }
+
       if (errorMessage.includes("already exists")) {
         setError("Un compte avec cette adresse email existe déjà.");
       } else {
