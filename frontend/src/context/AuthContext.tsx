@@ -2,15 +2,15 @@
 'use client';
 
 import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import { loginUser as apiLogin, registerUser as apiRegister } from '@/lib/api';
+import { loginUser as apiLogin, registerUser as apiRegister, UserProfile } from '@/lib/api';
 
 // Définition du type pour le contexte
 interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
-  login: (email: any, password: any) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  register: (email: any, password: any) => Promise<any>;
+  register: (email: string, password: string) => Promise<UserProfile>;
   isLoading: boolean;
 }
 
@@ -42,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(null);
   };
 
-  const register = async (email: string, password: string) => {
+  const register = async (email: string, password: string): Promise<UserProfile> => {
     const data = await apiRegister(email, password);
     // L'inscription ne connecte pas automatiquement l'utilisateur,
     // donc nous ne définissons pas de token ici.

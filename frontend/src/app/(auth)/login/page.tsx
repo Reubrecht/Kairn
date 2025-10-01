@@ -35,8 +35,12 @@ export default function LoginPage() {
       await login(email, password);
       setSuccess('Connexion réussie ! Redirection...');
       router.push('/dashboard?loggedin=true');
-    } catch (err: any) {
-      setError(err.message || 'Une erreur est survenue lors de la connexion.');
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Une erreur inconnue est survenue lors de la connexion.');
+      }
     } finally {
       setIsLoading(false);
     }
